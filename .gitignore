@@ -11,6 +11,9 @@ doc
 # bundler
 .bundle
 
+# aptana
+.project
+
 # jeweler generated
 pkg
 
