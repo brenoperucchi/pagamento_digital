@@ -3,7 +3,7 @@
 module PagamentoDigital
   class Pedido
     
-    # Map all billing attributes that will be added as form inputs.
+    # Mapeia todos atributos relacionados ao pagamento que serão adicionados às entradas do formulário.
     DADOS_DO_PAGAMENTO = {
       :nome                 => "nome",
       :email                => "email",
@@ -44,40 +44,31 @@ module PagamentoDigital
       @produtos = []
     end
 
-    # Add a new product to the PagSeguro order
-    # The allowed values are:
-    # - weight (Optional. If float, will be multiplied by 1000g)
-    # - shipping (Optional. If float, will be multiplied by 100 cents)
-    # - quantity (Optional. Defaults to 1)
-    # - price (Required. If float, will be multiplied by 100 cents)
-    # - description (Required. Identifies the product)
-    # - id (Required. Should match the product on your database)
-    # - fees (Optional. If float, will be multiplied by 100 cents)
-    def <<(options)
-      options = {
-        :weight => nil,
-        :shipping => nil,
-        :fees => nil,
-        :quantity => 1
-      }.merge(options)
+    # Adiciona um novo produto a um pedido do Pagamento Digital
+    # Os valores permitidos são:
+    # - peso (Opcional. Se for float, será multiplicado por 1000g)
+    # - frete (Opcional. Se float, será multiplicado por 100 centavos)
+    # - quantidade (Opcional. O padrão é 1)
+    # - preco (Obrigatório. Se float, será multiplicado por 100 centavos)
+    # - descricao (Obrigatório. Identifica o produto)
+    # - id (Obrigatório. Deve corresponder com o produto no seu banco de dados)
+    # - taxa (Opcional. Se float, será multiplicado por 100 centavos)
+    def <<(opcoes)
+      opcoes = {
+        :peso => nil,
+        :frete => nil,
+        :taxa => nil,
+        :quantidade => 1
+      }.merge(opcoes)
 
-      # convert shipping to cents
-      options[:shipping] = convert_unit(options[:shipping], 100)
+      # converte peso para gramas
+      opcoes[:peso] = convert_unit(opcoes[:peso], 1000)
 
-      # convert fees to cents
-      options[:fees] = convert_unit(options[:fees], 100)
-
-      # convert price to cents
-      options[:price] = convert_unit(options[:price], 100)
-
-      # convert weight to grammes
-      options[:weight] = convert_unit(options[:weight], 1000)
-
-      produtos.push(options)
+      produtos.push(opcoes)
     end
 
-    def add(options)
-      self << options
+    def add(opcoes)
+      self << opcoes
     end
 
     private

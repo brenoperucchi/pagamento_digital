@@ -17,6 +17,9 @@
 			<%= hidden_field_tag PagamentoDigital::Pedido::DADOS_DO_PAGAMENTO[nome.to_sym], valor %>
 		<% end %>
 
+		<%= hidden_field_tag "url_retorno", PagamentoDigital.config["base"] + PagamentoDigital.config["return_to"] %>
+		<%= hidden_field_tag "redirect", true %>
+
 		<%= submit_tag opcoes[:submit] %>
 	</div>
 </form>

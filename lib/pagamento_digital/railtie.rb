@@ -10,13 +10,13 @@ module PagamentoDigital
       # end
     # end
 
-    # rake_tasks do
-      # load File.dirname(__FILE__) + "/../tasks/pagseguro.rake"
-    # end
+    rake_tasks do
+      load File.dirname(__FILE__) + "/../tasks/pagamento_digital.rake"
+    end
 
     initializer "pagamento_digital.initialize" do |app|
       ::ActionView::Base.send(:include, PagamentoDigital::Helper)
-      # ::ActionController::Base.send(:include, PagSeguro::ActionController)
+      ::ActionController::Base.send(:include, PagamentoDigital::ActionController)
     end
 
     # config.after_initialize do
