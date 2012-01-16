@@ -10,4 +10,5 @@ require "pagamento_digital/notificacao"
 require "pagamento_digital/pedido"
 require "pagamento_digital/action_controller"
 require "pagamento_digital/helper"
+require "pagamento_digital/utils"
 

@@ -20,6 +20,6 @@
 		<%= hidden_field_tag "url_retorno", PagamentoDigital.config["base"] + PagamentoDigital.config["return_to"] %>
 		<%= hidden_field_tag "redirect", true %>
 
-		<%= submit_tag opcoes[:submit] %>
+		<%= submit_tag opcoes[:title_submit], :class => opcoes[:class_submit], :id => opcoes[:id_submit], :style => opcoes[:style_submit] %>
 	</div>
 </form>

@@ -27,9 +27,9 @@ module PagamentoDigital
     # Códigos do status do pedido no Pagamento Digital
     #
     COD_STATUS = {
-      0 => :andamento,
-      1 => :concluida,
-      2 => :cancelada
+      "0" => :andamento,
+      "1" => :concluida,
+      "2" => :cancelada
     }
 
     # Métodos de pagamento no Pagamento Digital
@@ -55,7 +55,23 @@ module PagamentoDigital
     #
     def initialize(params, token = nil)
       @token = token
-      @params = params
+      @params = PagamentoDigital.desenvolvedor? ? params : normalizar(params)
+    end
+
+    # Normaliza o hash especificado convertendo todos os dados para UTF-8.
+    #
+    def normalizar(hash)
+      each_value(hash) do |value|
+        Utils.to_utf8(value)
+      end
+    end
+
+    # Desnormaliza o hash especificado convertendo todos os dados para ISO-8859-1.
+    #
+    def desnormalizar(hash)
+      each_value(hash) do |value|
+        Utils.to_iso8859(value)
+      end
     end
 
     # Retorna a lista de produtos enviada pelo Pagamento Digital.
@@ -170,6 +186,18 @@ module PagamentoDigital
     end
 
     private
+    
+    def each_value(hash, &blk) # :nodoc:
+      hash.each do |key, value|
+        if value.kind_of?(Hash)
+          hash[key] = each_value(value, &blk)
+        else
+          hash[key] = blk.call value
+        end
+      end
+
+      hash
+    end
 
     # Converte formato de quantidade para float.
     #
