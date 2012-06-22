@@ -1,25 +1,10 @@
-<form action="<%= PagamentoDigital.gateway_url %>" class="pagamento_digital" name="pagamentodigital" method="post">
+<form action="<%= PagamentoDigital.gateway_url %>" class="pagamento_digital" name="pagamentodigital" method="post" id='pagamentodigital'>
 	<div>
-		<%= hidden_field_tag "id_pedido", pedido.id %>
-		<%= hidden_field_tag "email_loja", opcoes.fetch(:email, PagamentoDigital.config["email"])  %>
-		<%= hidden_field_tag "tipo_integracao", "PAD" %>
-		<%= hidden_field_tag "frete", "0" %>
-
-		<% pedido.produtos.each_with_index do |produto, i| %>
-			<% i += 1 %>
-			<%= hidden_field_tag "produto_codigo_#{i}", produto[:id] %>
-			<%= hidden_field_tag "produto_descricao_#{i}", produto[:descricao] %>
-			<%= hidden_field_tag "produto_qtde_#{i}", produto[:quantidade] %>
-			<%= hidden_field_tag "produto_valor_#{i}", produto[:preco] %>
+		<% pedido.each do |nome, valor| %>
+			<%= hidden_field_tag nome.to_s, valor %>
 		<% end %>
-
-		<% pedido.pagamento.each do |nome, valor| %>
-			<%= hidden_field_tag PagamentoDigital::Pedido::DADOS_DO_PAGAMENTO[nome.to_sym], valor %>
-		<% end %>
-
-		<%= hidden_field_tag "url_retorno", PagamentoDigital.config["base"] + PagamentoDigital.config["return_to"] %>
-		<%= hidden_field_tag "redirect", true %>
-
-		<%= submit_tag opcoes[:title_submit], :class => opcoes[:class_submit], :id => opcoes[:id_submit], :style => opcoes[:style_submit] %>
 	</div>
 </form>
+<script>
+ document.getElementById("pagamentodigital").submit()
+ </script>
